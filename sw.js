@@ -1,4 +1,4 @@
-const V = "sgp-v1", A = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
+const V = "sgp-v2", A = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(V).then(c => c.addAll(A)));
   self.skipWaiting();
@@ -8,12 +8,14 @@ self.addEventListener("activate", e => {
   self.clients.claim();
 });
 self.addEventListener("fetch", e => {
-  if (e.request.method !== "GET") return;
+  const r = e.request, u = new URL(r.url);
+  const ok = u.origin === location.origin || u.pathname.startsWith("/firebasejs/") ||
+    u.hostname === "fonts.googleapis.com" || u.hostname === "fonts.gstatic.com";
+  if (r.method !== "GET" || !ok) return;
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-      const cp = res.clone();
-      caches.open(V).then(c => c.put(e.request, cp));
+    fetch(r).then(res => {
+      if (res.ok) { const cp = res.clone(); caches.open(V).then(c => c.put(r, cp)).catch(() => {}); }
       return res;
-    }).catch(() => caches.match("./index.html")))
+    }).catch(() => caches.match(r).then(m => m || caches.match("./index.html")))
   );
 });

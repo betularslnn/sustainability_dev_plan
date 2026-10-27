@@ -55,6 +55,7 @@ main{padding-top:16px}
 .ct b{font-family:"Bricolage Grotesque",Georgia,serif;font-size:1.1rem}.ct span{font-size:.92rem;color:var(--mut)}.ct em{font-style:normal;font-size:.82rem;font-weight:600}
 .em{color:var(--mut);padding:20px 0}
 footer{margin-top:24px;font-size:.85rem;color:var(--mut);max-width:70ch}
+.au{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:.88rem;color:var(--mut)}
 .bk{font:inherit;font-size:.9rem;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer}
 @media(prefers-reduced-motion:reduce){#bar{transition:none}}
 </style>
@@ -65,6 +66,7 @@ footer{margin-top:24px;font-size:.85rem;color:var(--mut);max-width:70ch}
 <h1>Sürdürülebilirlik Gelişim Planı</h1>
 <p>Alanı tanı, bir odak seç, belge ve kurslarla derinleş, projelerle göster. Maddeleri tamamladıkça işaretle; ilerlemen bu tarayıcıda saklanır.</p>
 <div class="pg"><div class="pc" id="pct">0%</div><div class="pb"><div class="bt"><div id="bar"></div></div><div id="cnt"></div></div></div>
+<div class="au"><span id="as">Giriş yapılmadı, veriler yalnızca bu cihazda</span><button id="ab" class="bk">Google ile giriş</button></div>
 </header>
 <div class="st">
 <div class="sc" id="tabs"></div>
@@ -214,13 +216,67 @@ $("#v").addEventListener("change",e=>{
  const k=e.target.dataset.k;if(!k)return;
  st[k]=e.target.checked?1:0;
  try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}
+ if(window.cloudSave)cloudSave(k,st[k]);
  prog();
 });
 $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(st)],{type:"application/json"}));a.download="surdurulebilirlik-yedek.json";a.click()};
 $("#im").onclick=()=>$("#f").click();
-$("#f").onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(o&&typeof o=="object"){st=o;localStorage.setItem("sgp1",JSON.stringify(st));render()}}catch(_){alert("Dosya okunamadı.")}};
+$("#f").onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(o&&typeof o=="object"){st=o;localStorage.setItem("sgp1",JSON.stringify(st));if(window.cloudSyncAll)cloudSyncAll();render()}}catch(_){alert("Dosya okunamadı.")}};
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
+window.getLocal=()=>st;
+window.applyRemote=o=>{st=o;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}render()};
 render();
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCw9IBjxtkNrDbYNExRcZm_dxDxqLoRYvQ",
+  authDomain: "sustainability-dev-plan.firebaseapp.com",
+  projectId: "sustainability-dev-plan",
+  storageBucket: "sustainability-dev-plan.firebasestorage.app",
+  messagingSenderId: "364296932091",
+  appId: "1:364296932091:web:fc87ba6ef53a35c0d03e5e"
+});
+const auth = getAuth(app);
+const db = initializeFirestore(app, { localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }) });
+const g = id => document.getElementById(id);
+const say = t => { g("as").textContent = t; };
+let ref = null, unsub = null, first = true;
+
+g("ab").onclick = async () => {
+  if (auth.currentUser) { await signOut(auth); return; }
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { say("Giriş yapılamadı: " + (e.code || "hata")); }
+};
+
+onAuthStateChanged(auth, user => {
+  if (unsub) { unsub(); unsub = null; }
+  ref = null; first = true;
+  if (!user) { say("Giriş yapılmadı, veriler yalnızca bu cihazda"); g("ab").textContent = "Google ile giriş"; return; }
+  g("ab").textContent = "Çıkış yap";
+  ref = doc(db, "users", user.uid);
+  unsub = onSnapshot(ref, { includeMetadataChanges: true }, snap => {
+    const rem = (snap.exists() && snap.data().progress) || {}, loc = window.getLocal();
+    if (first) {
+      first = false;
+      const add = {};
+      for (const k in loc) if (loc[k] && rem[k] === undefined) add[k] = loc[k];
+      if (Object.keys(add).length) setDoc(ref, { progress: add }, { merge: true });
+      window.applyRemote({ ...loc, ...rem, ...add });
+    } else {
+      window.applyRemote({ ...loc, ...rem });
+    }
+    say(navigator.onLine ? (snap.metadata.hasPendingWrites ? "Eşitleniyor…" : "Eşitlendi") : "Çevrimdışı, bağlanınca eşitlenecek");
+  }, err => say("Eşitleme hatası: " + (err.code || "bilinmiyor")));
+});
+
+window.cloudSave = (k, v) => { if (ref) setDoc(ref, { progress: { [k]: v } }, { merge: true }).catch(() => {}); };
+window.cloudSyncAll = () => { if (ref) setDoc(ref, { progress: window.getLocal() }, { merge: true }).catch(() => {}); };
+</script>
+
 </body>
 </html>

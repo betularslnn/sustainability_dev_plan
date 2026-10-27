@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sürdürülebilirlik Gelişim Planı</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0e6b68">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gelişim Planı">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--bg:#edf2f0;--sf:#fafcfb;--ink:#11302f;--mut:#566d6a;--ln:#d3dfdc;--p:#0e6b68;--pt:#d6ebe8;--ac:#e0a526;--ts:45%;--tl:91%;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1a1a;--sf:#132626;--ink:#e3f0ee;--mut:#8fb0ab;--ln:#244240;--p:#5cc9c2;--pt:#173635;--ac:#f0bd4a;--ts:25%;--tl:17%;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1a1a;--sf:#132626;--ink:#e3f0ee;--mut:#8fb0ab;--ln:#244240;--p:#5cc9c2;--pt:#173635;--ac:#f0bd4a;--ts:25%;--tl:17%;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1,h2,.pc{font-family:"Bricolage Grotesque",Georgia,serif;letter-spacing:-.01em}
+.w{max-width:900px;margin:0 auto;padding:0 16px 40px}
+header{padding:28px 0 16px;display:grid;gap:14px}
+h1{margin:0;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.1}
+header p{margin:0;color:var(--mut);max-width:60ch}
+.pg{display:flex;align-items:center;gap:16px}
+.pc{font-size:2.6rem;font-weight:700;color:var(--p);min-width:4ch}
+.pb{flex:1}.bt{height:10px;border-radius:9px;background:var(--ln);overflow:hidden}
+#bar{height:100%;width:0;background:var(--ac);transition:width .3s}
+#cnt{font-size:.9rem;color:var(--mut);margin-top:4px}
+.st{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);padding:6px 0 8px;border-bottom:1px solid var(--ln)}
+.sc{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.sc button{flex:none;font:inherit;font-weight:600;border:0;background:none;color:var(--mut);padding:8px 14px;border-radius:8px;cursor:pointer}
+.sc button.on{background:var(--p);color:var(--bg)}
+.fl button{font:inherit;font-size:.85rem;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:4px 11px;border-radius:99px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;flex:none}
+.fl button.on{border-color:var(--p);background:var(--pt);font-weight:600}
+i{width:9px;height:9px;border-radius:50%;background:hsl(var(--h) 55% 48%);display:inline-block}
+#q{width:100%;box-sizing:border-box;margin-top:8px;font:inherit;padding:9px 12px;border:1px solid var(--ln);border-radius:8px;background:var(--sf);color:var(--ink)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+main{padding-top:16px}
+.in{color:var(--mut);margin:0 0 14px;max-width:68ch}
+.rw{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:13px 14px 13px 12px;margin:0 0 8px;background:var(--sf);border:1px solid var(--ln);border-left:5px solid hsl(var(--h) 50% 45%);border-radius:6px;cursor:pointer}
+.rw input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--p)}
+.rw b{font-size:1.05rem}.rw b a{color:inherit;text-decoration-color:var(--ac);text-decoration-thickness:2px;text-underline-offset:3px}
+.rw p{margin:4px 0 0;color:var(--mut);font-size:.95rem}
+.rw:has(input:checked){opacity:.6}
+.ms{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.ch{display:inline-flex;align-items:center;gap:5px;font-size:.78rem;padding:1px 9px;border-radius:99px;background:var(--pt)}
+.rm{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:22px}
+.rm div{border-top:4px solid var(--ac);padding-top:8px}
+.rm h2{margin:0;font-size:1.25rem}.rm span{font-size:.85rem;color:var(--mut)}.rm p{margin:4px 0 0;font-size:.95rem}
+.gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.ct{font:inherit;text-align:left;color:var(--ink);cursor:pointer;border:1px solid var(--ln);border-top:5px solid hsl(var(--h) 55% 48%);border-radius:6px;padding:12px;background:hsl(var(--h) var(--ts) var(--tl));display:grid;gap:4px;align-content:start}
+.ct b{font-family:"Bricolage Grotesque",Georgia,serif;font-size:1.1rem}.ct span{font-size:.92rem;color:var(--mut)}.ct em{font-style:normal;font-size:.82rem;font-weight:600}
+.em{color:var(--mut);padding:20px 0}
+footer{margin-top:24px;font-size:.85rem;color:var(--mut);max-width:70ch}
+.bk{font:inherit;font-size:.9rem;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer}
+@media(prefers-reduced-motion:reduce){#bar{transition:none}}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+<h1>Sürdürülebilirlik Gelişim Planı</h1>
+<p>Alanı tanı, bir odak seç, belge ve kurslarla derinleş, projelerle göster. Maddeleri tamamladıkça işaretle; ilerlemen bu tarayıcıda saklanır.</p>
+<div class="pg"><div class="pc" id="pct">0%</div><div class="pb"><div class="bt"><div id="bar"></div></div><div id="cnt"></div></div></div>
+</header>
+<div class="st">
+<div class="sc" id="tabs"></div>
+<div class="sc fl" id="chips"></div>
+<input id="q" type="search" placeholder="Bu sekmede ara (ör. LEED, solar, karbon)">
+</div>
+<main id="v"></main>
+<footer>Bağlantılar ilgili kurumların ana sayfalarına gider. Sertifika koşulları, ücretler ve etkinlik tarihleri değişebilir; başvurmadan önce resmi sayfadan doğrula.<p style="margin-top:12px"><button id="ex" class="bk">Yedek al</button> <button id="im" class="bk">Yedekten yükle</button><input id="f" type="file" accept=".json" hidden></p>
+</footer>
+</div>
+<script>
+const CATS=[
+["yapi","Sürdürülebilir Yapı","Yeşil bina tasarımı; LEED, BREEAM ve EDGE ile enerji, su ve malzeme verimliliği.",160],
+["enerji","Yenilenebilir Enerji ve Depolama","Güneş, rüzgâr, batarya depolama, şebeke entegrasyonu ve enerji verimliliği.",42],
+["lojistik","Sürdürülebilir Lojistik","Düşük karbonlu taşıma, rota ve yük optimizasyonu, ISO 14083 ile emisyon hesabı.",215],
+["esg","ESG ve Raporlama","GRI, TSRS/ISSB, çifte önemlilik, yönetim sistemleri ve sürdürülebilirlik stratejisi.",265],
+["karbon","Karbon ve İklim","Sera gazı envanteri, karbon ayak izi, hedef belirleme ve iklim riski.",295],
+["dongu","Döngüsel Ekonomi ve Atık","Sıfır atık, geri dönüşüm, döngüsel ürün tasarımı ve yaşam döngüsü analizi.",20],
+["tarim","Sürdürülebilir Tarım ve Gıda","Rejeneratif tarım, iyi tarım uygulamaları, gıda kaybı ve sürdürülebilir tedarik.",95],
+["su","Su ve Doğa Yönetimi","Su ayak izi, havza yönetimi, biyoçeşitlilik ve doğa temelli çözümler.",190]];
+const LV={B:"Başlangıç",O:"Orta",I:"İleri"};
+const S=s=>s.trim().split("\n").map(r=>r.split("|"));
+const DOCS=S(`
+LEED Green Associate / LEED AP|yapi|USGBC, GBCI|B|Yeşil bina projelerinde LEED sertifikasyon sürecini yönetmek için; mimarlık, mühendislik, inşaat ve gayrimenkul alanlarında kullanılır.
+BREEAM Assessor / AP|yapi|BRE|O|Avrupa ve Birleşik Krallık ağırlıklı projelerde bina değerlendirmesi yapmak için; değerlendirici firmalar ve danışmanlıkta kullanılır.
+EDGE Expert|yapi|IFC (Dünya Bankası Grubu)|B|Gelişmekte olan pazarlarda hızlı ve düşük maliyetli yeşil bina analizi ve sertifikasyonu için kullanılır.
+WELL AP|yapi|IWBI|O|Kullanıcı sağlığı ve konforu odaklı ofis ve konut tasarımında kullanılır.
+Certified Energy Manager (CEM)|enerji|AEE|O|Tesis ve sanayide enerji verimliliği projeleri, enerji denetimi ve ESCO işlerinde kullanılır.
+Enerji Yöneticisi / Etüt-Proje belgesi|enerji|Enerji Bakanlığı (YEGM) yetkili kuruluşları|B|Türkiye’de sanayi ve binalarda yasal olarak enerji yönetimi ve etüt hizmeti verebilmek için gerekir.
+NABCEP PV Associate|enerji|NABCEP|B|Güneş enerjisi sistemlerinin tasarımı, kurulumu, satışı ve proje geliştirmesinde temel yeterlilik gösterir.
+ISO 14001 / 50001 Baş Denetçi (Lead Auditor)|esg|IRCA, PECB, belgelendirme kuruluşları|I|Çevre ve enerji yönetim sistemlerinin üçüncü taraf denetimi için; belgelendirme kuruluşları ve kurumsal denetimde kullanılır.
+GRI Certified Sustainability Professional|esg|GRI Academy|O|Sürdürülebilirlik raporu hazırlamak, paydaş ve önemlilik analizi yapmak için kullanılır.
+FSA Credential (SASB / ISSB)|esg|IFRS Foundation|B|Finansal açıdan önemli sürdürülebilirlik konularını analiz etmek için; yatırım ve raporlama ekiplerinde kullanılır.
+CFA Certificate in ESG Investing|esg|CFA Institute|B|ESG verisini yatırım ve fon yönetimi kararlarına entegre etmek için kullanılır.
+ISO 14064 / GHG Lead Verifier|karbon|PECB, belgelendirme kuruluşları|I|Sera gazı envanterlerini doğrulamak ve karbon ayak izi çalışmalarını denetlemek için kullanılır.
+GARP SCR (Sürdürülebilirlik ve İklim Riski)|karbon|GARP|O|Bankacılık ve risk yönetiminde iklim riski analizi ve senaryo çalışmaları için kullanılır.
+GLEC Framework eğitimi (ISO 14083)|lojistik|Smart Freight Centre|O|Taşıma zincirinde emisyon hesabı için; lojistik firmaları, yükleniciler ve tedarik zinciri ekiplerinde kullanılır.
+Sıfır Atık Belgesi|dongu|Çevre, Şehircilik ve İklim Değişikliği Bakanlığı|B|Kurum ve işletmelerin atık yönetimi uygulamalarını belgelemek ve Türkiye’deki yükümlülükleri karşılamak için alınır.
+LCA / EPD uzmanlığı (ISO 14040/44)|dongu|PRé Sustainability, üniversite programları|O|Ürün ve malzemelerin çevresel etkisini hesaplamak, EPD hazırlamak ve ürün tasarımına yön vermek için kullanılır.
+GLOBALG.A.P. / TÜRKGAP|tarim|GLOBALG.A.P., Tarım ve Orman Bakanlığı|O|İyi tarım uygulamalarını belgelemek için; ihracat ve market tedarik zincirlerinde aranır.
+AWS Standardı eğitimi|su|Alliance for Water Stewardship|O|Tesis ve havza ölçeğinde sorumlu su yönetimi için; sanayi, gıda ve tekstilde kullanılır.
+ISSP Sustainability Associate / CSP|*|ISSP|B|Alana genel bakış sağlayan yeterlilik; generalist sürdürülebilirlik rollerinde kullanılır.
+`).map((r,i)=>({k:"d"+i,t:r[0],c:r[1],m:[r[2],LV[r[3]]],d:r[4]}));
+const LEARN=S(`
+SDG Academy|https://sdgacademy.org|*|U|BM destekli, üniversite kalitesinde ücretsiz sürdürülebilir kalkınma dersleri.
+UN CC:Learn|https://unccelearn.org|karbon|U|BM’nin iklim değişikliği kursları; çoğu ücretsiz ve sertifikalı.
+Coursera|https://www.coursera.org|*|K|Kursları ücretsiz izleme (audit) seçeneğiyle dinleyebilirsin; sertifika ücretli.
+edX|https://www.edx.org|*|K|Üniversite kursları; audit seçeneği ücretsiz.
+OpenLearn (Open University)|https://www.open.edu/openlearn|*|U|Çevre ve sürdürülebilirlik üzerine ücretsiz kısa kurslar.
+Climate Fresk|https://climatefresk.org|karbon|U|İklim bilimini kart oyunuyla öğreten atölyeler.
+Project Drawdown|https://drawdown.org|karbon|U|İklim çözümleri haritası ve etkilerine dair açık kaynaklar.
+GHG Protocol|https://ghgprotocol.org|karbon|U|Sera gazı envanteri standartları ve hesaplama araçları.
+USGBC Education|https://www.usgbc.org/education|yapi|K|LEED hazırlık içerikleri ve Green Associate yol haritası.
+EDGE Buildings|https://edgebuildings.com|yapi|U|EDGE uygulaması, eğitim ve rehberler.
+CEDBİK|https://cedbik.org|yapi|K|Türkiye Yeşil Bina Derneği; Türkçe içerik, etkinlik ve eğitimler.
+IRENA|https://www.irena.org|enerji|U|Yenilenebilir enerji raporları, istatistikler ve eğitim materyalleri.
+NREL|https://www.nrel.gov|enerji|U|Güneş, rüzgâr ve depolama araştırmaları; ücretsiz araç ve yayınlar.
+IEA|https://www.iea.org|enerji|U|Küresel enerji verisi ve raporları; bir kısmı ücretsiz.
+Smart Freight Centre|https://www.smartfreightcentre.org|lojistik|K|GLEC Framework ve lojistik emisyon rehberleri.
+GRI|https://www.globalreporting.org|esg|K|GRI standartları ücretsiz; eğitimler kısmen ücretli.
+SKD Türkiye|https://www.skdturkiye.org|esg|U|Türkiye iş dünyası sürdürülebilirlik ağı; Türkçe yayın ve etkinlikler.
+Ellen MacArthur Foundation|https://www.ellenmacarthurfoundation.org|dongu|U|Döngüsel ekonomi kaynakları, vaka çalışmaları ve çevrimiçi öğrenme.
+FAO eLearning Academy|https://elearning.fao.org|tarim|U|Tarım, gıda sistemleri ve su yönetimi üzerine ücretsiz kurslar.
+Alliance for Water Stewardship|https://a4ws.org|su|K|AWS standardı, rehberler ve eğitimler.
+`).map((r,i)=>({k:"l"+i,t:r[0],u:r[1],c:r[2],m:[r[3]=="U"?"Ücretsiz":"Ücretsiz ve ücretli içerik"],d:r[4]}));
+const JOBS=S(`
+LinkedIn Jobs|https://www.linkedin.com/jobs|Global ve Türkiye|“Sustainability”, “ESG”, “LEED”, “karbon” gibi anahtar kelimelerle uyarı kur.
+Kariyer.net|https://www.kariyer.net|Türkiye|Sürdürülebilirlik uzmanı, çevre mühendisi ve enerji yöneticisi ilanları.
+Yenibiriş|https://www.yenibiris.com|Türkiye|Türkiye’deki kurumsal sürdürülebilirlik ve enerji ilanları.
+Indeed|https://www.indeed.com|Global|Ülke ve uzaktan çalışma filtresiyle geniş ilan taraması.
+Climatebase|https://climatebase.org|Global|İklim odaklı şirketlerde ilanlar ve kuruluş haritası.
+Work on Climate|https://workonclimate.org|Global|İklim alanında çalışmak isteyenlerin topluluğu ve ilan panosu.
+Impactpool|https://www.impactpool.org|Uluslararası kuruluşlar|BM ve kalkınma kuruluşlarının sürdürülebilirlik ilanları.
+UN Careers|https://careers.un.org|Uluslararası kuruluşlar|BM sistemindeki iklim, çevre ve kalkınma pozisyonları.
+ReliefWeb|https://reliefweb.int|STK ve kalkınma|STK ve kalkınma sektöründeki çevre ve iklim ilanları.
+Idealist|https://www.idealist.org|STK, staj, gönüllülük|Sosyal etki odaklı iş, staj ve gönüllülük fırsatları.
+`).map((r,i)=>({k:"j"+i,t:r[0],u:r[1],c:"*",m:[r[2]],d:r[3]}));
+const HACK=S(`
+Devpost|https://devpost.com/hackathons|Küresel hackathon takvimi; “climate” ve “sustainability” temalarını filtrele.
+NASA Space Apps Challenge|https://www.spaceappschallenge.org|Yıllık küresel hackathon; iklim ve Dünya gözlem verisiyle çalışma fırsatı.
+MIT Solve|https://solve.mit.edu|İklim ve sürdürülebilirlik odaklı küresel çözüm çağrıları.
+Climate Change AI|https://www.climatechange.ai|Topluluk, etkinlik ve iklim için makine öğrenmesi projeleri.
+Kaggle Yarışmaları|https://www.kaggle.com/competitions|Veri bilimi yarışmaları; enerji ve iklim veri setleri.
+EIT Climate-KIC|https://www.climate-kic.org|İklim girişimciliği programları ve yarışmaları.
+MLH|https://mlh.io|Öğrenci hackathon ağı; takvimde çevre temalı etkinlikleri ara.
+TEKNOFEST|https://www.teknofest.org|Türkiye’de yıllık teknoloji yarışmaları; çevre ve enerji temalarını yarışma listesinde kontrol et.
+TÜBİTAK|https://www.tubitak.gov.tr|Öğrenci ve genç araştırmacı proje destekleri ve yarışmaları.
+Meetup|https://www.meetup.com|Şehrindeki sürdürülebilirlik ve iklim buluşmaları; ağ kurmak için.
+`).map((r,i)=>({k:"h"+i,t:r[0],u:r[1],c:"*",m:[],d:r[2]}));
+const PROJ=S(`
+Kaggle Datasets|https://www.kaggle.com/datasets|karbon|B|Ülke bazlı CO₂ emisyonu verisini analiz edip kısa bir panoya dönüştür.
+Our World in Data|https://ourworldindata.org|*|B|Enerji karışımı veya emisyon grafiklerinden tek sayfalık bir veri hikâyesi hazırla.
+PVWatts (NREL)|https://pvwatts.nrel.gov|enerji|B|Bir çatı veya okul için güneş enerjisi üretimi ve geri ödeme tahmini yap.
+NASA POWER|https://power.larc.nasa.gov|enerji|O|Şehrinin güneş ışınımı verisiyle bir GES verim analizi hazırla.
+EDGE uygulaması|https://edgebuildings.com|yapi|B|Örnek bir konut tasarımı için enerji, su ve malzeme tasarrufu analizi yap.
+GHG Protocol araçları|https://ghgprotocol.org|karbon|B|Küçük bir işletme veya hane için Kapsam 1-2-3 karbon ayak izi tablosu oluştur.
+Climate TRACE|https://climatetrace.org|karbon|O|İki sektörün veya ülkenin emisyonlarını karşılaştıran kısa rapor yaz.
+Smart Freight Centre|https://www.smartfreightcentre.org|lojistik|O|Bir sevkiyat rotası için ton-km başına emisyon hesapla ve taşıma modlarını kıyasla.
+Ellen MacArthur vaka çalışmaları|https://www.ellenmacarthurfoundation.org|dongu|B|Bir ürün seç; kiralama, onarım veya geri alım gibi döngüsel bir iş modeli öner.
+FAO eLearning Academy|https://elearning.fao.org|tarim|B|Bir tarım bölgesi için su kullanımı ve sulama verimliliği vaka analizi hazırla.
+Zooniverse|https://www.zooniverse.org|su|B|Doğa ve iklim vatandaş bilimi projelerinde veri etiketleyerek pratik kazan.
+Project Drawdown|https://drawdown.org|*|B|Bir iklim çözümü seç; etki ve maliyet özetini kendi cümlelerinle yaz.
+GitHub Topics: sustainability|https://github.com/topics/sustainability|*|O|Açık kaynak bir sürdürülebilirlik projesine dokümantasyon veya veri temizleme ile katkı ver.
+`).map((r,i)=>({k:"p"+i,t:r[0],u:r[1],c:r[2],m:[LV[r[3]]],d:"Proje fikri: "+r[4]}));
+const T=[
+["Kategoriler"],
+["Belgeler","Uzmanlığı belgeleyen sertifika ve yeterlilik sistemleri; kimin, hangi alanda, ne amaçla kullandığı. Araştırdığın veya edindiğin belgeyi işaretle.",DOCS],
+["Öğrenme","Başlangıç için kaynak siteleri ve ücretsiz kurslar. Tamamladığın veya düzenli takip ettiğin kaynağı işaretle.",LEARN],
+["İlanlar","İş ve staj ilanlarını inceleyebileceğin siteler. İlk adım: birkaç ilandaki ortak becerileri listele ve planını ona göre güncelle. Uyarı kurduğun siteyi işaretle.",JOBS],
+["Hackathon","Proje çağrıları ve hackathon kaynakları. Takibe aldığın veya katıldığın platformu işaretle.",HACK],
+["Projeler","Başlangıç seviyesinde portföy projesi geliştirebileceğin veri ve araç siteleri. Bitirdiğin projeyi işaretle.",PROJ]];
+const $=s=>document.querySelector(s);
+const cat_=id=>CATS.find(c=>c[0]==id);
+let st={},cat="*",tab=0,q="";
+try{st=JSON.parse(localStorage.getItem("sgp1")||"{}")}catch(e){}
+function prog(){
+ const all=[DOCS,LEARN,JOBS,HACK,PROJ].flat(),d=all.filter(x=>st[x.k]).length,p=Math.round(d/all.length*100);
+ $("#pct").textContent=p+"%";$("#bar").style.width=p+"%";$("#cnt").textContent=d+" / "+all.length+" madde tamamlandı";
+}
+function row(x){
+ const c=x.c=="*"?null:cat_(x.c),tt=x.u?`<a href="${x.u}" target="_blank" rel="noopener">${x.t}</a>`:x.t;
+ return `<label class="rw" style="--h:${c?c[3]:200}"><input type="checkbox" data-k="${x.k}" ${st[x.k]?"checked":""}><div><b>${tt}</b><div class="ms">${c?`<span class="ch"><i style="--h:${c[3]}"></i>${c[1]}</span>`:""}${x.m.map(m=>`<span class="ch">${m}</span>`).join("")}</div><p>${x.d}</p></div></label>`;
+}
+function render(){
+ prog();
+ $("#tabs").innerHTML=T.map((t,i)=>`<button class="${i==tab?"on":""}" data-t="${i}">${t[0]}</button>`).join("");
+ $("#chips").innerHTML=[["*","Tüm alanlar","",200],...CATS].map(c=>`<button class="${c[0]==cat?"on":""}" data-c="${c[0]}"><i style="--h:${c[3]}"></i>${c[1]}</button>`).join("");
+ $("#q").style.display=tab?"block":"none";
+ let h;
+ if(!tab){
+  h=`<div class="rm"><div><h2>Keşfet</h2><span>1–4. hafta</span><p>Kategorileri tara, bir odak alan seç, iki ücretsiz kursa başla.</p></div><div><h2>Derinleş</h2><span>5–12. hafta</span><p>Odak alanın giriş belgesine hazırlan, bir başlangıç projesini bitir, ilanlardaki becerileri çıkar.</p></div><div><h2>Uygula</h2><span>13. haftadan sonra</span><p>Bir hackathon veya yarışmaya katıl, portföyünü ve profilini güncelle, başvurulara başla.</p></div></div><div class="gr">`+
+  CATS.map(c=>{const it=[...DOCS,...LEARN,...PROJ].filter(x=>x.c==c[0]),n=it.filter(x=>st[x.k]).length;return `<button class="ct" data-c="${c[0]}" data-go="1" style="--h:${c[3]}"><b>${c[1]}</b><span>${c[2]}</span><em>${n} / ${it.length} tamamlandı</em></button>`}).join("")+`</div>`;
+ }else{
+  const t=T[tab],l=t[2].filter(x=>(cat=="*"||x.c=="*"||x.c==cat)&&(x.t+x.d+x.m.join(" ")).toLocaleLowerCase("tr").includes(q));
+  h=`<p class="in">${t[1]}</p>`+(l.length?l.map(row).join(""):`<p class="em">Eşleşen madde yok. Alan filtresini “Tüm alanlar” yap veya aramayı temizle.</p>`);
+ }
+ $("#v").innerHTML=h;
+}
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-t],[data-c]");if(!b)return;
+ if(b.dataset.t!=null)tab=+b.dataset.t;
+ if(b.dataset.c!=null){cat=b.dataset.c;if(b.dataset.go){tab=1;scrollTo(0,0)}}
+ render();
+});
+$("#q").addEventListener("input",e=>{q=e.target.value.toLocaleLowerCase("tr").trim();render()});
+$("#v").addEventListener("change",e=>{
+ const k=e.target.dataset.k;if(!k)return;
+ st[k]=e.target.checked?1:0;
+ try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}
+ prog();
+});
+$("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(st)],{type:"application/json"}));a.download="surdurulebilirlik-yedek.json";a.click()};
+$("#im").onclick=()=>$("#f").click();
+$("#f").onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(o&&typeof o=="object"){st=o;localStorage.setItem("sgp1",JSON.stringify(st));render()}}catch(_){alert("Dosya okunamadı.")}};
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
+render();
+</script>
+</body>
+</html>

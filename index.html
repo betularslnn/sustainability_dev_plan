@@ -43,11 +43,7 @@
 :root[data-theme="dark"]{--bg: #103B5B;--sf: #1B4A6D; --ink: #D9D0C7; --mut: #A9BCC8; --ln: #3E6A8C; --p: #8FB5D3;--pt: #2A5A80;--ac: #E0A06A;--ts:22%;--tl:23%;color-scheme:dark}
 */
 
-
-
-
- 
- html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
 h1,h2,.pc{font-family:"Bricolage Grotesque",Georgia,serif;letter-spacing:-.01em}
@@ -88,6 +84,10 @@ main{padding-top:16px}
 footer{margin-top:24px;font-size:.85rem;color:var(--mut);max-width:70ch}
 .au{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:.88rem;color:var(--mut)}
 .bk{font:inherit;font-size:.9rem;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer}
+.sm{padding:3px 10px;font-size:.82rem}
+.na{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.nt,.af input,.af select,.af textarea{width:100%;box-sizing:border-box;font:inherit;padding:8px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--ink)}
+.af{display:grid;gap:8px;margin:0 0 14px;padding:12px;background:var(--sf);border:1px solid var(--ln);border-radius:8px}
 @media(prefers-reduced-motion:reduce){#bar{transition:none}}
 </style>
 </head>
@@ -214,13 +214,23 @@ const cat_=id=>CATS.find(c=>c[0]==id);
 let st={},cat="*",tab=0,q="";
 try{st=JSON.parse(localStorage.getItem("sgp1")||"{}")}catch(e){}
 function prog(){
- const all=[DOCS,LEARN,JOBS,HACK,PROJ].flat(),d=all.filter(x=>st[x.k]).length,p=Math.round(d/all.length*100);
+ const all=allItems(),d=all.filter(x=>st[x.k]).length,p=Math.round(d/all.length*100);
  $("#pct").textContent=p+"%";$("#bar").style.width=p+"%";$("#cnt").textContent=d+" / "+all.length+" madde tamamlandı";
 }
+
+/*
 function row(x){
  const c=x.c=="*"?null:cat_(x.c),tt=x.u?`<a href="${x.u}" target="_blank" rel="noopener">${x.t}</a>`:x.t;
  return `<label class="rw" style="--h:${c?c[3]:200}"><input type="checkbox" data-k="${x.k}" ${st[x.k]?"checked":""}><div><b>${tt}</b><div class="ms">${c?`<span class="ch"><i style="--h:${c[3]}"></i>${c[1]}</span>`:""}${x.m.map(m=>`<span class="ch">${m}</span>`).join("")}</div><p>${x.d}</p></div></label>`;
 }
+*/
+function row(x){
+ const c=x.c=="*"?null:cat_(x.c),nt=st["n_"+x.k]||"",url=x.u?(/^https?:\/\//i.test(x.u)?x.u:"https://"+x.u):"";
+ const tt=url?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(x.t)}</a>`:esc(x.t);
+ const note=(nt||op.has(x.k))?`<textarea class="nt" data-n="${x.k}" rows="2" placeholder="Notun (neden seçtin, ne öğrendin, tarih…)">${esc(nt)}</textarea>`:`<button type="button" class="bk sm" data-nb="${x.k}">+ Not</button>`;
+ return `<label class="rw" style="--h:${c?c[3]:200}"><input type="checkbox" data-k="${x.k}" ${st[x.k]?"checked":""}><div><b>${tt}</b><div class="ms">${c?`<span class="ch"><i style="--h:${c[3]}"></i>${esc(c[1])}</span>`:""}${x.m.map(m=>`<span class="ch">${esc(m)}</span>`).join("")}</div><p>${esc(x.d)}</p><div class="na">${note}${x.own?`<button type="button" class="bk sm" data-del="${x.k}">Sil</button>`:""}</div></div></label>`;
+}
+ 
 function render(){
  prog();
  $("#tabs").innerHTML=T.map((t,i)=>`<button class="${i==tab?"on":""}" data-t="${i}">${t[0]}</button>`).join("");
@@ -229,12 +239,13 @@ function render(){
  let h;
  if(!tab){
   h=`<div class="rm"><div><h2>Keşfet</h2><span>1–4. hafta</span><p>Kategorileri tara, bir odak alan seç, iki ücretsiz kursa başla.</p></div><div><h2>Derinleş</h2><span>5–12. hafta</span><p>Odak alanın giriş belgesine hazırlan, bir başlangıç projesini bitir, ilanlardaki becerileri çıkar.</p></div><div><h2>Uygula</h2><span>13. haftadan sonra</span><p>Bir hackathon veya yarışmaya katıl, portföyünü ve profilini güncelle, başvurulara başla.</p></div></div><div class="gr">`+
-  CATS.map(c=>{const it=[...DOCS,...LEARN,...PROJ].filter(x=>x.c==c[0]),n=it.filter(x=>st[x.k]).length;return `<button class="ct" data-c="${c[0]}" data-go="1" style="--h:${c[3]}"><b>${c[1]}</b><span>${c[2]}</span><em>${n} / ${it.length} tamamlandı</em></button>`}).join("")+`</div>`;
+  CATS.map(c=>{const it=allItems().filter(x=>x.c==c[0]),n=it.filter(x=>st[x.k]).length;return `<button class="ct" data-c="${c[0]}" data-go="1" style="--h:${c[3]}"><b>${c[1]}</b><span>${c[2]}</span><em>${n} / ${it.length} tamamlandı</em></button>`}).join("")+`</div>`;
  }else{
-  const t=T[tab],l=t[2].filter(x=>(cat=="*"||x.c=="*"||x.c==cat)&&(x.t+x.d+x.m.join(" ")).toLocaleLowerCase("tr").includes(q));
-  h=`<p class="in">${t[1]}</p>`+(l.length?l.map(row).join(""):`<p class="em">Eşleşen madde yok. Alan filtresini “Tüm alanlar” yap veya aramayı temizle.</p>`);
+  const t=T[tab],l=listFor(tab).filter(x=>(cat=="*"||x.c=="*"||x.c==cat)&&(x.t+x.d+x.m.join(" ")).toLocaleLowerCase("tr").includes(q));
+  h=`<p class="in">${t[1]}</p>`+addForm()+(l.length?l.map(row).join(""):`<p class="em">Eşleşen madde yok. Alan filtresini “Tüm alanlar” yap veya aramayı temizle.</p>`);
  }
  $("#v").innerHTML=h;
+ if(fk){const el=$("#v").querySelector('[data-n="'+fk+'"]');if(el)el.focus();fk=""}
 }
 document.addEventListener("click",e=>{
  const b=e.target.closest("[data-t],[data-c]");if(!b)return;
@@ -254,8 +265,36 @@ $("#ex").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjec
 $("#im").onclick=()=>$("#f").click();
 $("#f").onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());if(o&&typeof o=="object"){st=o;localStorage.setItem("sgp1",JSON.stringify(st));if(window.cloudSyncAll)cloudSyncAll();render()}}catch(_){alert("Dosya okunamadı.")}};
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
+
+let op=new Set(),adding=false,fk="";
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function put(k,v){st[k]=v;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}if(window.cloudSave)cloudSave(k,v)}
+function cust(){return Object.keys(st).filter(k=>k.startsWith("i_")&&st[k]&&typeof st[k]=="object").sort().map(k=>{const o=st[k];return{k:"u"+k.slice(2),a:o.a,t:o.t||"",u:o.u||"",c:o.c||"*",m:["Eklediğim"],d:o.d||"",own:1}})}
+function allItems(){return [...DOCS,...LEARN,...JOBS,...HACK,...PROJ,...cust()]}
+function listFor(i){return [...T[i][2],...cust().filter(x=>x.a==i)]}
+function addForm(){
+ if(!adding)return `<p><button type="button" class="bk" data-add="1">+ Madde ekle</button></p>`;
+ const cs=CATS.map(c=>`<option value="${c[0]}">${esc(c[1])}</option>`).join("");
+ return `<div class="af"><input id="f_t" placeholder="Başlık (zorunlu)" maxlength="120"><input id="f_u" placeholder="Bağlantı (isteğe bağlı)"><select id="f_c"><option value="*">Tüm alanlar</option>${cs}</select><textarea id="f_d" rows="2" placeholder="Kısa açıklama (isteğe bağlı)"></textarea><div class="na"><button type="button" class="bk" data-save="1">Kaydet</button><button type="button" class="bk" data-add="1">Vazgeç</button></div></div>`;
+}
+function addItem(){
+ const t=$("#f_t").value.trim();
+ if(!t){$("#f_t").focus();return}
+ put("i_"+Date.now().toString(36),{a:tab,t:t,u:$("#f_u").value.trim(),c:$("#f_c").value,d:$("#f_d").value.trim()});
+ adding=false;render();
+}
+$("#v").addEventListener("click",e=>{
+ const nb=e.target.closest("[data-nb]"),dl=e.target.closest("[data-del]"),ad=e.target.closest("[data-add]"),sv=e.target.closest("[data-save]");
+ if(nb){op.add(nb.dataset.nb);fk=nb.dataset.nb;render()}
+ else if(dl){if(confirm("Bu madde silinsin mi?")){const id=dl.dataset.del;put("i_"+id.slice(1),null);put("n_"+id,"");put(id,0);render()}}
+ else if(ad){adding=!adding;render()}
+ else if(sv)addItem();
+});
+$("#v").addEventListener("change",e=>{const n=e.target.dataset.n;if(n)put("n_"+n,e.target.value.trim())});
+ 
 window.getLocal=()=>st;
-window.applyRemote=o=>{st=o;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}render()};
+/*window.applyRemote=o=>{st=o;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}render()};*/
+window.applyRemote=o=>{st=o;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}const a=document.activeElement;if(!(a&&a.closest&&a.closest("#v")&&a.type!="checkbox"))render()};
 render();
 </script>
 

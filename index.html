@@ -88,6 +88,9 @@ footer{margin-top:24px;font-size:.85rem;color:var(--mut);max-width:70ch}
 .na{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .nt,.af input,.af select,.af textarea{width:100%;box-sizing:border-box;font:inherit;padding:8px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--ink)}
 .af{display:grid;gap:8px;margin:0 0 14px;padding:12px;background:var(--sf);border:1px solid var(--ln);border-radius:8px}
+.xf{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.xb{font:inherit;font-size:.85rem;border:1px solid var(--ln);background:var(--sf);color:var(--ink);padding:4px 11px;border-radius:99px;cursor:pointer}
+.xb.on{border-color:var(--p);background:var(--pt);font-weight:600}
 @media(prefers-reduced-motion:reduce){#bar{transition:none}}
 </style>
 </head>
@@ -228,7 +231,7 @@ function row(x){
  const c=x.c=="*"?null:cat_(x.c),nt=st["n_"+x.k]||"",url=x.u?(/^https?:\/\//i.test(x.u)?x.u:"https://"+x.u):"";
  const tt=url?`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(x.t)}</a>`:esc(x.t);
  const note=(nt||op.has(x.k))?`<textarea class="nt" data-n="${x.k}" rows="2" placeholder="Notun (neden seçtin, ne öğrendin, tarih…)">${esc(nt)}</textarea>`:`<button type="button" class="bk sm" data-nb="${x.k}">+ Not</button>`;
- return `<label class="rw" style="--h:${c?c[3]:200}"><input type="checkbox" data-k="${x.k}" ${st[x.k]?"checked":""}><div><b>${tt}</b><div class="ms">${c?`<span class="ch"><i style="--h:${c[3]}"></i>${esc(c[1])}</span>`:""}${x.m.map(m=>`<span class="ch">${esc(m)}</span>`).join("")}</div><p>${esc(x.d)}</p><div class="na">${note}${x.own?`<button type="button" class="bk sm" data-del="${x.k}">Sil</button>`:""}</div></div></label>`;
+ return `<label class="rw" style="--h:${c?c[3]:200}"><input type="checkbox" data-k="${x.k}" ${st[x.k]?"checked":""}><div><b>${tt}</b><div class="ms">${c?`<span class="ch"><i style="--h:${c[3]}"></i>${esc(c[1])}</span>`:""}${x.m.map(m=>`<span class="ch">${esc(m)}</span>`).join("")}</div><p>${esc(x.d)}</p><div class="na">${note}<button type="button" class="bk sm" data-fav="${x.k}">${st["f_"+x.k]?"★ Favori":"☆ Favori"}</button>${x.own?`<button type="button" class="bk sm" data-del="${x.k}">Sil</button>`:""}</div></div></label>`;
 }
  
 function render(){
@@ -241,8 +244,8 @@ function render(){
   h=`<div class="rm"><div><h2>Keşfet</h2><span>1–4. hafta</span><p>Kategorileri tara, bir odak alan seç, iki ücretsiz kursa başla.</p></div><div><h2>Derinleş</h2><span>5–12. hafta</span><p>Odak alanın giriş belgesine hazırlan, bir başlangıç projesini bitir, ilanlardaki becerileri çıkar.</p></div><div><h2>Uygula</h2><span>13. haftadan sonra</span><p>Bir hackathon veya yarışmaya katıl, portföyünü ve profilini güncelle, başvurulara başla.</p></div></div><div class="gr">`+
   CATS.map(c=>{const it=allItems().filter(x=>x.c==c[0]),n=it.filter(x=>st[x.k]).length;return `<button class="ct" data-c="${c[0]}" data-go="1" style="--h:${c[3]}"><b>${c[1]}</b><span>${c[2]}</span><em>${n} / ${it.length} tamamlandı</em></button>`}).join("")+`</div>`;
  }else{
-  const t=T[tab],l=listFor(tab).filter(x=>(cat=="*"||x.c=="*"||x.c==cat)&&(x.t+x.d+x.m.join(" ")).toLocaleLowerCase("tr").includes(q));
-  h=`<p class="in">${t[1]}</p>`+addForm()+(l.length?l.map(row).join(""):`<p class="em">Eşleşen madde yok. Alan filtresini “Tüm alanlar” yap veya aramayı temizle.</p>`);
+  const t=T[tab],l=listFor(tab).filter(x=>(cat=="*"||x.c=="*"||x.c==cat)&&(x.t+x.d+x.m.join(" ")).toLocaleLowerCase("tr").includes(q)&&xok(x));
+  h=`<p class="in">${t[1]}</p>`+xBar()+addForm()+(l.length?l.map(row).join(""):`<p class="em">Eşleşen madde yok. Alan filtresini “Tüm alanlar” yap veya aramayı temizle.</p>`);
  }
  $("#v").innerHTML=h;
  if(fk){const el=$("#v").querySelector('[data-n="'+fk+'"]');if(el)el.focus();fk=""}
@@ -291,6 +294,29 @@ $("#v").addEventListener("click",e=>{
  else if(sv)addItem();
 });
 $("#v").addEventListener("change",e=>{const n=e.target.dataset.n;if(n)put("n_"+n,e.target.value.trim())});
+
+let xf=new Set();
+function xfList(){
+ const l=[["fav","★ Favoriler"],["open","Tamamlanmamış"]];
+ if(tab==2)l.push(["free","Ücretsiz"]);
+ if(tab==1||tab==5)l.push(["Başlangıç","Başlangıç"],["Orta","Orta"],["İleri","İleri"]);
+ return l;
+}
+function xBar(){return `<div class="xf">${xfList().map(f=>`<button type="button" class="xb ${xf.has(f[0])?"on":""}" data-x="${f[0]}">${f[1]}</button>`).join("")}</div>`}
+function xok(x){
+ const a=new Set(xfList().map(f=>f[0]).filter(k=>xf.has(k)));
+ if(a.has("fav")&&!st["f_"+x.k])return false;
+ if(a.has("open")&&st[x.k])return false;
+ if(a.has("free")&&!x.m.includes("Ücretsiz"))return false;
+ const lv=["Başlangıç","Orta","İleri"].filter(v=>a.has(v));
+ if(lv.length&&!x.m.some(m=>lv.includes(m)))return false;
+ return true;
+}
+$("#v").addEventListener("click",e=>{
+ const x=e.target.closest("[data-x]"),fv=e.target.closest("[data-fav]");
+ if(x){const k=x.dataset.x;xf.has(k)?xf.delete(k):xf.add(k);render()}
+ else if(fv){const k="f_"+fv.dataset.fav;put(k,st[k]?0:1);render()}
+});
  
 window.getLocal=()=>st;
 /*window.applyRemote=o=>{st=o;try{localStorage.setItem("sgp1",JSON.stringify(st))}catch(_){}render()};*/

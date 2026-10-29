@@ -297,7 +297,7 @@ $("#v").addEventListener("change",e=>{const n=e.target.dataset.n;if(n)put("n_"+n
 
 let xf=new Set();
 function xfList(){
- const l=[["fav","★ Favoriler"],["open","Tamamlanmamış"]];
+ const l=[["fav","★ Favoriler"],["open","Tamamlanmamış"]],["own","Eklediklerim"]];
  if(tab==2)l.push(["free","Ücretsiz"]);
  if(tab==1||tab==5)l.push(["Başlangıç","Başlangıç"],["Orta","Orta"],["İleri","İleri"]);
  return l;
@@ -305,7 +305,10 @@ function xfList(){
 function xBar(){return `<div class="xf">${xfList().map(f=>`<button type="button" class="xb ${xf.has(f[0])?"on":""}" data-x="${f[0]}">${f[1]}</button>`).join("")}</div>`}
 function xok(x){
  const a=new Set(xfList().map(f=>f[0]).filter(k=>xf.has(k)));
+ //if(a.has("fav")&&!st["f_"+x.k])return false;
  if(a.has("fav")&&!st["f_"+x.k])return false;
+ if(a.has("own")&&!x.own)return false;
+ 
  if(a.has("open")&&st[x.k])return false;
  if(a.has("free")&&!x.m.includes("Ücretsiz"))return false;
  const lv=["Başlangıç","Orta","İleri"].filter(v=>a.has(v));
